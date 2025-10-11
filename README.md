@@ -139,6 +139,7 @@ recsys_sweettv/
     ranker/       # lgbm.yaml, deepfm.yaml, neumf.yaml  
     rerank/       # mmr.yaml, trend.yaml  
   src/
+    utils/ # io.py, time.py, idmap.py, split.py, eval.py, logging.py  
     preprocess/   # load_raw.py, join_program.py, sessionize.py, build_text.py, build_kg.py, build_features.py  
     candidates/   # toppop.py, itemknn.py, als_wmf.py, bpr.py, lightgcn.py,  
                   # markov.py, sasrec.py, content_tfidf.py, content_sbert.py,  
