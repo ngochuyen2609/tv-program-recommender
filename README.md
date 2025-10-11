@@ -16,7 +16,7 @@
     - .\.venv\Scripts\kaggle.exe competitions download -c sweet-tv-channel -p .\data    
 
 # Pipeline (Concise)
-1) Chuẩn hoá & JOIN  
+## 1) Chuẩn hoá & JOIN  
 Mục tiêu: tạo tương tác user × tv_show (implicit) khớp lịch phát.  
 Steps:
 dataset11-30.csv → rename stop_time→end_time, duraton→duration; parse datetimes; filter duration ≥ 180s.  
@@ -28,12 +28,12 @@ Save → data/interim/logs_program.parquet
 Columns: user_id, tv_show_id, vsetv_id, start_time_view, end_time_view, duration_view.  
 Checkpoint: post-join coverage > 70% (after 180s filter).  
 
-2) Session hoá & Split thời gian  
+## 2) Session hoá & Split thời gian  
 Session: per-user sort by time; cut when gap > 45m → session_id.  
 Split (no leakage): Train weeks 11–24, Val 25–30 (Test 31–42 only for submission).  
 Output: data/interim/train.parquet, data/interim/val.parquet.  
 
-3) Candidate (multi-source)
+## 3) Candidate (multi-source)
 
     - CF cơ bản/nâng cao  
     TopPop (time-decay): ∑exp(−Δt/α)·log1p(duration), α=7–30d.  
@@ -63,29 +63,29 @@ Output: data/interim/train.parquet, data/interim/val.parquet.
     Pooling: take top-100 from each source → merge & dedup → pool ≤ 300–500 per user → data/interim/candidates.parquet.  
     Checkpoint: pool Recall@100 (val) ≥ 0.8 after full sources.  
 
-4) Features for Ranker  
+## 4) Features for Ranker  
 ID: user_id, tv_show_id, channel_id.  
 Time: hour_sin/cos, day_of_week, recency, near_airtime.  
 Content: multi-hot genres/category, SBERT_128.  
 Knowledge: KG_item_64 (if available).  
 CF/Seq scores: normalized [0,1] for each score_* (TopPop/KNN/ALS/BPR/LightGCN/Markov/SASRec/TFIDF/SBERT).  
 
-5) Rankers (fusion)  
+## 5) Rankers (fusion)  
 LightGBM Ranker: objective=lambdarank, lr=0.05, num_leaves=255, n_estimators=2000, group=user_id.  
 DeepFM (PyTorch): fields = ID + categorical + dense (time, SBERT, KG, scores); MLP [256,128,64], dropout=0.2, Adam=1e-3.  
 Labels: positives from val; negatives 5–10×/user.  
 Checkpoint: MAP@5 (val) +10–30% over best single-source.  
 
-6) Re-ranking  
+## 6) Re-ranking  
 MMR: λ=0.6–0.8, Sim = cosine(SBERT_128) + Jaccard(genres)/overlap(actors,director); soft quota per-genre ≤ 3/5.  
 Trend/Freshness boost: boost = β·exp(−Δt/τ) with β=0.05–0.2, τ=1–7d; apply only on test (use meta weeks 31–42).  
 Checkpoint: ILD/Coverage ↑, MAP@5 no drop (ideally ↑).  
 
-7) Evaluation & Ablation  
+## 7) Evaluation & Ablation  
 Metrics: MAP@5, Recall@5, NDCG@5, ILD, Coverage (on val weeks 25–30).  
 Ablation: −content / −session / −CF scores / −MMR / −trend; log configs & results under runs/.  
 
-8) Final Train & Submit  
+## 8) Final Train & Submit  
 
 ## Nội dung chính từng khối
 ### (a) CF cơ bản / nâng cao
