@@ -1,0 +1,19 @@
+cd "C:\bachkhoahanoi\2025.1\Recommend System\recsys_sweettv"
+.\.venv\Scripts\Activate.ps1
+$env:PYTHONPATH = (Get-Location)
+
+# 00) Make data: JOIN + Session + Split
+.\.venv\Scripts\python.exe -m src.pipelines.00_make_data `
+  --logs .\data\raw\sweettv-tv-program-recommender\dataset11-30.csv `
+  --meta .\data\raw\sweettv-tv-program-recommender\export_arh_11-20-final.csv `
+        .\data\raw\sweettv-tv-program-recommender\export_arh_21-30-final.csv `
+  --interim-dir .\data\interim `
+  --gap-min 45
+
+Output: 
+[JOIN] coverage=0.319 (expect > 0.70) -> data\interim\logs_program.parquet
+[SESSION] users=4817 sessions=552001
+[OK] train=data\interim\train.parquet  val=data\interim\val.parquet
+[OK] joined=data\interim\logs_program.parquet
+
+  
