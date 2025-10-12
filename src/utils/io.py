@@ -1,12 +1,15 @@
-import pandas as pd, numpy as np
 from pathlib import Path
+import pandas as pd
 
-DATA = Path("data")
+def ensure_dir(p: Path):
+    p.mkdir(parents=True, exist_ok=True)
+    return p
 
-logs = pd.read_csv(DATA/"dataset11-30.csv")
-# Chuẩn hoá tên cột (bộ channel hay có 'stop_time' và 'duraton')
-logs = logs.rename(columns={"stop_time":"end_time", "duraton":"duration"})
-logs["start_time"] = pd.to_datetime(logs["start_time"])
-logs["end_time"]   = pd.to_datetime(logs["end_time"])
-# Lọc nhiễu: giữ lượt xem >= 3 phút
-logs = logs[logs["duration"] >= 180]
+def read_csv(path: str | Path, **kw) -> pd.DataFrame:
+    return pd.read_csv(path, **kw)
+
+def to_parquet(df, path: str | Path):
+    path = Path(path)
+    ensure_dir(path.parent)
+    df.to_parquet(path, index=False)
+    return str(path)
