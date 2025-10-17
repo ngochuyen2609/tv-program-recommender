@@ -13,7 +13,7 @@
     - https://www.kaggle.com/competitions/sweettv-tv-program-recommender/data
 
 ## Step 4: Tải dữ liệu bằng CLI
-    - .\.venv\Scripts\kaggle.exe competitions download -c sweet-tv-channel -p .\data    
+    - .\.venv\Scripts\kaggle.exe competitions download -c sweettv-tv-program-recommender -p .\data    
 
 # Pipeline (Concise)
 1) Chuẩn hoá & JOIN  
