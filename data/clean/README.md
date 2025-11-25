@@ -43,57 +43,64 @@ Metadata mô tả nội dung của từng chương trình truyền hình.
 - Giảm cold-start item
 - Tạo item-feature matrix cho DeepFM / LightFM
 
-# IV/
+# IV/ Servey the data
 ## 1. Quy mô & độ thưa (Size & Sparsity)
-Số user: 4,838
-Số item (tv_show_id ≠ 0): 3,716
-Số tương tác: 931,775
-Mật độ ma trận user–item (density): ~0.0518 (≈ 5.18%)
+- Số user: 4,838
+- Số item (tv_show_id ≠ 0): 3,716
+- Số tương tác: 931,775
+- Mật độ ma trận user–item (density): ~0.0518 (≈ 5.18%)
+
 ➡ Matrix rất thưa → phù hợp cho các mô hình CF, embedding, candidate generation top-K.
 
 ## 2. Phân bố theo user và item
-Per User
-p10: user xem ≥ 17 chương trình
-median: 66.5
-mean: 82.23
-97.89% user xem ≥ 5 items
-95.23% user xem ≥ 10 items
+- Per User
+    - p10: user xem ≥ 17 chương trình
+    - median: 66.5
+    - mean: 82.23
+    - 97.89% user xem ≥ 5 items
+    - 95.23% user xem ≥ 10 items
+
 ➡ User có lịch sử khá phong phú → CF học tốt.
 
-Per Item
-p10: mỗi item có ≥ 5 lượt xem
-median: 44
-mean: 250.75
-70.4% item có ≥ 20 lượt xem
+- Per Item
+    - p10: mỗi item có ≥ 5 lượt xem
+    - median: 44
+    - mean: 250.75
+    - 70.4% item có ≥ 20 lượt xem
 ➡ Catalog tương đối “ấm”, nhiều item đủ dữ liệu học.
 
 ## 3. K-core (5 user × 5 item)
-users còn lại: 4735
-items còn lại: 3362
-interactions còn lại: 930,553
+- users còn lại: 4735
+- items còn lại: 3362
+- interactions còn lại: 930,553
+
 ➡ Dữ liệu cực kỳ vững → CF / Matrix Factorization hoạt động tốt.
 
 ## 4. Session analysis
-median session length: 1 lượt xem
-mean session length: 2.06
-44.83% session có ≥ 2 lượt xem
+- median session length: 1 lượt xem
+- mean session length: 2.06
+- 44.83% session có ≥ 2 lượt xem
+
 ➡ Mức độ phiên đủ tốt để dùng Co-visitation / Sequential Recommendation.
 
 ## 5. Chất lượng tín hiệu (screen_time)
-p25 = 0.503
-median = 0.832
-p75 = 1.0
-52.22% lượt xem có screen_time ≥ 0.8
+- p25 = 0.503
+- median = 0.832
+- p75 = 1.0
+- 52.22% lượt xem có screen_time ≥ 0.8
+
 ➡ Tín hiệu rất sạch và mạnh → thích hợp làm implicit rating.
 
 ## 6. Cold-start (train → val)
-Cold users in val: 0.61%
-Cold items in val: 23.35%
+- Cold users in val: 0.61%
+- Cold items in val: 23.35%
+
 ➡ Gần như không có cold-user — nhưng cold-item khá cao → cần metadata / content-based để khắc phục.
 
 ## 7. Popularity Skew
-Top 50 item chiếm 54.81% tổng tương tác
-Top 100 item chiếm 63.57%
-Top 500 chiếm 80.32%
-Top 1000 chiếm 89.53%
+- Top 50 item chiếm 54.81% tổng tương tác
+- Top 100 item chiếm 63.57%
+- Top 500 chiếm 80.32%
+- Top 1000 chiếm 89.53%
+
 ➡ Dữ liệu lệch mạnh theo item phổ biến → cần attention khi train để tránh mô hình chỉ recommend item hot.
