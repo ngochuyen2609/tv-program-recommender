@@ -17,3 +17,12 @@ scikit-learn
 torch
 
 #CF nang cao
+
+# content base
+torch-scatter 
+torch-sparse 
+torch-cluster 
+torch-spline-conv 
+torch-geometric -f https://data.pyg.org/whl/torch-$(torch.__version__).html 
+scikit-learn 
+sentence-transformers 
