@@ -3,3 +3,17 @@ kaggle>=1.7.4.5
 
 # 
 tqdm>=4.67.1
+
+#preprocessing
+duckdb 
+pyarrow
+
+#CF
+pandas
+numpy 
+scipy 
+implicit 
+scikit-learn
+torch
+
+#CF nang cao

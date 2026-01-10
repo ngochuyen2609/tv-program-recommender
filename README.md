@@ -1,7 +1,7 @@
 # Guideline to dowload data
-## Step 1: Set up virtal environment and necessary library (Cmd )
+## Step 1: Set up virtal environment and necessary library 
     >> python -m venv .venv  
-    >> ..venv\Scripts\activate.bat  
+    >> & "..venv/Scripts/Activate.ps1"
     >> ..venv\Scripts\python.exe -m pip install --upgrade pip  
     >> ..venv\Scripts\python.exe -m pip install -r requirements.txt  
 
